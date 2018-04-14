@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>
+        Control Panel
+    </title>
+    <!-- Bootstrap CSS -->
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+        rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+    </link>
+    </meta>
+    </meta>
+    </meta>
+    <script src="/socket.io/socket.io.js">
+
+    </script>
+    <script>
+        var iosocket = io.connect();
+
+
+        function sendMsg(user_message) {
+            iosocket.send(user_message);
+        }
+
+        function executeCommand() {
+            sendMsg("cmd{#}" + document.getElementById("command").value);
+        }
+
+        function toggle(rel_number) {
+            sendMsg("tgl{#}" + rel_number);
+        }
+
+        function all(mode) {
+            sendMsg("all{#}" + mode);
+        }
+
+
+
+
+        iosocket.on("connect", function () {
+
+            document.getElementById("message_log").value += "Connection Established\n";
+
+
+        });
+
+        iosocket.on("message", function (message) {
+
+            document.getElementById("message_log").value += message + "\n";
+
+
+        });
+
+
+        iosocket.on("dxs1", function (custom_data) {
+
+            document.getElementById("message_log").value += "CUSTOM DATA RECEIVED : " + custom_data + "\n";
+
+        });
+
+        iosocket.on("broadcast", function (message) {
+
+            document.getElementById("message_log").value += message + "\n";
+
+        });
+
+
+        iosocket.on("disconnect", function () {
+            document.getElementById("message_log").value += "DISCONNECTED";
+
+        });
+    </script>
+</head>
+
+<body>
+
+
+
+
+    <div class="container" style="margin-top:20px">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4"></div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div style="margin-bottom:20px">
+                    <a class="btn btn-primary btn-block" href="javascript:toggle(1)">Relay 1</a>
+                </div>
+                <div style="margin-bottom:20px">
+                    <a class="btn btn-primary btn-block" href="javascript:toggle(2)">Relay 2</a>
+                </div>
+                <div>
+                    <hr>
+                </div>
+                <div style="margin-bottom:20px">
+                    <a class="btn btn-danger btn-block" href="javascript:all('on')">All on</a>
+                </div>
+                <div style="margin-bottom:20px">
+                    <a class="btn btn-danger btn-block" href="javascript:all('off')">All off</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4"></div>
+        </div>
+
+
+        <div class="row" style="margin-top: 10px; display:none">
+            <div class="col-md-12">
+                <textarea id="message_log" style="width: 950px;  height:50px;"></textarea>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <!-- jQuery -->
+    <script src="//code.jquery.com/jquery.js">
+
+    </script>
+    <!-- Bootstrap JavaScript -->
+    <script crossorigin="anonymous" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+
+    </script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+    </br>
+    </br>
+    </br>
+</body>
+
+</html>
